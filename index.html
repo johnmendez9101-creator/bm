@@ -3,209 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Art Museum</title>
+<title>Realistic Modern Art Museum</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400&display=swap');
 
-:root{
+:root {
   --wall-gradient: linear-gradient(to bottom, #cfe0f3, #e0ecf8);
   --accent-color: #c7a75a;
   --highlight: rgba(255,255,255,0.25);
 }
 
-body{
-  margin:0;
-  font-family:'Inter',sans-serif;
-  background:var(--wall-gradient);
-  overflow:hidden;
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--wall-gradient);
+  overflow: hidden;
 }
 
-header{
-  text-align:center;
-  padding:1.5rem;
+header {
+  text-align: center;
+  padding: 1.5rem;
 }
-header h1{font-family:'Playfair Display',serif;font-size:2.5rem;color:#2a3e5a;}
-header p{opacity:.7;font-size:1rem;}
+header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #2a3e5a; }
+header p { opacity: .7; font-size: 1rem; }
 
-nav.arrows{
-  position:absolute;
-  top:50%;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  pointer-events:none;
+nav.arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
 }
-.arrow{
-  pointer-events:auto;
-  font-size:2rem;
-  cursor:pointer;
-  user-select:none;
-  color:#2a3e5a;
-  opacity:.5;
-  transition:opacity .3s;
+.arrow {
+  pointer-events: auto;
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+  color: #2a3e5a;
+  opacity: .5;
+  transition: opacity .3s, transform .3s;
 }
-.arrow:hover{opacity:1;}
-.arrow.left{margin-left:1rem;}
-.arrow.right{margin-right:1rem;}
+.arrow:hover { opacity: 1; transform: translateY(-5px); }
+.arrow.left { margin-left: 1rem; }
+.arrow.right { margin-right: 1rem; }
 
-.rooms{
-  position:relative;
-  width:100%;
-  height:80vh;
-  overflow:hidden;
+.rooms {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  perspective: 1200px;
 }
 
-.room{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:3rem;
-  transform:translateX(100%);
-  transition:transform 1s ease;
+.room {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  transform: translateX(100%) translateZ(0px) scale(1);
+  transition: transform 1s ease;
 }
-.room.active{transform:translateX(0);}
+.room.active {
+  transform: translateX(0) translateZ(0px) scale(1);
+}
 
 /* Artwork */
-.artwork{
-  position:relative;
-  width:200px;
-  height:280px;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  transition:transform .3s;
+.artwork {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform .3s;
 }
-.artwork img{
-  width:100%;
-  height:80%;
-  object-fit:cover;
-  border-radius:4px;
+.artwork img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 8px 15px rgba(0,0,0,.15);
 }
-.artwork:hover{
-  transform:scale(1.05);
+.artwork:hover {
+  transform: scale(1.05);
 }
-.label{
-  text-align:center;
-  margin-top:0.5rem;
-  font-size:0.85rem;
-  font-family:'Playfair Display',serif;
-  color:#2a3e5a;
+.label {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-family: 'Playfair Display', serif;
+  color: #2a3e5a;
 }
 
 /* Spotlight overlay */
-.spotlight{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:radial-gradient(circle at var(--x,50%) var(--y,50%), var(--highlight), transparent 50%);
-  mix-blend-mode:soft-light;
-  opacity:0;
-  transition:opacity .2s;
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--x,50%) var(--y,50%), var(--highlight), transparent 50%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity .2s;
 }
 
 /* Bystanders */
-.bystander{
-  position:absolute;
-  bottom:0;
-  width:40px;
-  height:90px;
-  background:linear-gradient(#111,#333);
-  border-radius:20px 20px 12px 12px;
-  opacity:0.3;
-  animation:idle 4s infinite alternate ease-in-out;
+.bystander {
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 90px;
+  background: linear-gradient(#111,#333);
+  border-radius: 20px 20px 12px 12px;
+  opacity: 0.4;
+  animation: idle 4s infinite alternate ease-in-out;
 }
-.bystander::before{
+.bystander::before {
+  content: '';
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  background: #222;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+.bystander::after {
   content:'';
   position:absolute;
-  top:-25px;
-  left:50%;
-  width:28px;
-  height:28px;
+  top:10px;
+  left:-10px;
+  width:60px;
+  height:25px;
   background:#222;
   border-radius:50%;
-  transform:translateX(-50%);
+  opacity:.3;
 }
-@keyframes idle{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-5px);}
-  100%{transform:translateY(0);}
+@keyframes idle {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
 /* Plants */
-.plant{
-  position:absolute;
-  bottom:0;
-  width:50px;
-  height:70px;
-  background:#b07c4a;
-  border-radius:0 0 12px 12px;
-  animation:sway 3s infinite alternate ease-in-out;
+.plant {
+  position: absolute;
+  bottom: 0;
+  width: 50px;
+  height: 70px;
+  background: #b07c4a;
+  border-radius: 0 0 12px 12px;
 }
-.plant::before{
-  content:'';
-  position:absolute;
-  bottom:60px;
-  left:50%;
-  width:100px;
-  height:60px;
-  background:radial-gradient(circle at bottom,#2f6b3f,#143a24);
-  border-radius:50%;
-  transform:translateX(-50%);
+.plant::before {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  width: 100px;
+  height: 60px;
+  background: radial-gradient(circle at bottom, #2f6b3f, #143a24);
+  border-radius: 50%;
+  transform: translateX(-50%);
 }
-@keyframes sway{
-  0%{transform:rotate(0deg);}
-  100%{transform:rotate(3deg);}
+.plant-leaf {
+  position: absolute;
+  width: 20px;
+  height: 40px;
+  background: green;
+  border-radius: 10px;
+  transform-origin: bottom center;
+  animation: leafSway 2s infinite alternate ease-in-out;
+}
+@keyframes leafSway {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(5deg); }
 }
 
 /* Sculptures */
-.sculpture{
-  position:absolute;
-  bottom:0;
-  width:50px;
-  height:80px;
-  background:#aaa;
-  border-radius:4px;
-  animation:sway 3s infinite alternate ease-in-out;
+.sculpture {
+  position: absolute;
+  bottom: 0;
+  width: 50px;
+  height: 80px;
+  background: linear-gradient(#bbb,#777);
+  border-radius: 4px;
+  animation: sway 3s infinite alternate ease-in-out;
+}
+@keyframes sway {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(3deg); }
 }
 
 /* Fullscreen viewer */
-.viewer{
-  position:fixed;
-  inset:0;
-  background:rgba(245,248,252,0.95);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:10;
-  flex-direction:column;
+.viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(245,248,252,0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  flex-direction: column;
 }
-.viewer img{
-  max-width:80%;
-  max-height:80%;
-  border:3px solid var(--accent-color);
-  border-radius:4px;
+.viewer img {
+  max-width: 80%;
+  max-height: 80%;
+  border: 3px solid var(--accent-color);
+  border-radius: 4px;
 }
-.viewer button{
-  margin-top:1rem;
-  padding:0.5rem 1rem;
-  background:var(--accent-color);
-  border:none;
-  border-radius:4px;
-  color:white;
-  font-size:1rem;
-  cursor:pointer;
+.viewer button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent-color);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 }
-
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Modern Art Museum</h1>
-  <p>Contemporary Space & Form</p>
+  <h1>Realistic Modern Art Museum</h1>
+  <p>Immersive Contemporary Gallery</p>
 </header>
 
 <nav class="arrows">
@@ -217,37 +242,31 @@ nav.arrows{
   <!-- Room 1 -->
   <div class="room active">
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/1.jpg">
-      <div class="label">Minimal Form, 2018</div>
+      <img src="images/1.jpg"><div class="label">Minimal Form, 2018</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/2.jpg">
-      <div class="label">Still Geometry, 2019</div>
+      <img src="images/2.jpg"><div class="label">Still Geometry, 2019</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/3.jpg">
-      <div class="label">Quiet Color, 2020</div>
+      <img src="images/3.jpg"><div class="label">Quiet Color, 2020</div>
     </div>
     <div class="bystander" style="left:10%"></div>
     <div class="bystander" style="right:10%"></div>
     <div class="plant left"></div>
     <div class="plant right"></div>
-    <div class="sculpture" style="left:40%"></div>
+    <div class="sculpture" style="left:50%"></div>
   </div>
 
   <!-- Room 2 -->
   <div class="room">
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/4.jpg">
-      <div class="label">Negative Space, 2021</div>
+      <img src="images/4.jpg"><div class="label">Negative Space, 2021</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/5.jpg">
-      <div class="label">Soft Tension, 2022</div>
+      <img src="images/5.jpg"><div class="label">Soft Tension, 2022</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/6.jpg">
-      <div class="label">Form Study, 2023</div>
+      <img src="images/6.jpg"><div class="label">Form Study, 2023</div>
     </div>
     <div class="bystander" style="left:15%"></div>
     <div class="bystander" style="right:15%"></div>
@@ -259,16 +278,13 @@ nav.arrows{
   <!-- Room 3 -->
   <div class="room">
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/7.jpg">
-      <div class="label">Muted Rhythm, 2023</div>
+      <img src="images/7.jpg"><div class="label">Muted Rhythm, 2023</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/8.jpg">
-      <div class="label">Light Balance, 2024</div>
+      <img src="images/8.jpg"><div class="label">Light Balance, 2024</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/9.jpg">
-      <div class="label">Abstract Calm, 2024</div>
+      <img src="images/9.jpg"><div class="label">Abstract Calm, 2024</div>
     </div>
     <div class="bystander" style="left:20%"></div>
     <div class="bystander" style="right:20%"></div>
@@ -280,16 +296,13 @@ nav.arrows{
   <!-- Room 4 -->
   <div class="room">
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/10.jpg">
-      <div class="label">Future Silence, 2025</div>
+      <img src="images/10.jpg"><div class="label">Future Silence, 2025</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/11.jpg">
-      <div class="label">Digital Pause, 2025</div>
+      <img src="images/11.jpg"><div class="label">Digital Pause, 2025</div>
     </div>
     <div class="artwork" onmouseenter="hoverSpotlight(this)" onmouseleave="hideSpotlight()" onclick="openViewer(this)">
-      <img src="images/12.jpg">
-      <div class="label">Pure Form, 2026</div>
+      <img src="images/12.jpg"><div class="label">Pure Form, 2026</div>
     </div>
     <div class="bystander" style="left:15%"></div>
     <div class="bystander" style="right:15%"></div>
@@ -325,6 +338,7 @@ function nextRoom(){
   if(currentRoom<rooms.length-1) currentRoom++;
   showRoom(currentRoom);
 }
+
 function prevRoom(){
   if(currentRoom>0) currentRoom--;
   showRoom(currentRoom);
@@ -350,7 +364,6 @@ function openViewer(el){
 function closeViewer(){
   document.getElementById('viewer').style.display='none';
 }
-
 </script>
 </body>
 </html>
